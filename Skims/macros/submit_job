@@ -1,0 +1,16 @@
+Universe     = vanilla
+Initialdir   = /net/hisrv0001/home/dav2105/run/CMSSW_3_5_8_patch3/src/UserCode/velicanu/Skims/macros/
+Notification = Error
+Executable   = /net/hisrv0001/home/dav2105/run/CMSSW_3_5_8_patch3/src/UserCode/velicanu/Skims/macros/condor.sh
+Arguments    = $(Process) 
+GetEnv       = True
+Output       = /net/hisrv0001/home/dav2105/scratch/dav2105/outlogs/outfile$(Process).out
+Error        = /net/hisrv0001/home/dav2105/scratch/dav2105/outlogs/outfile$(Process).err
+Log          = /net/hisrv0001/home/dav2105/scratch/dav2105/outlogs/outfile$(Process).log
+
++AccountingGroup = "group_cmshi.$USER"
+when_to_transfer_output = ON_EXIT
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+Queue 794
