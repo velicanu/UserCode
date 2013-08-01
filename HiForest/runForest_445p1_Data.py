@@ -16,6 +16,7 @@ trkTag="generalTracks"
 
 hiTrackQuality = "highPurity"              # iterative tracks
 #hiTrackQuality = "highPuritySetWithPV"    # calo-matched tracks
+#git test
 
 doElectrons = False
 
