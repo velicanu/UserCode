@@ -1,0 +1,17 @@
+/mnt/hadoop/cms/store/user/velicanu/v6sorted/sortedHiForest_multbinned_nmin110_nmax1000.root
+/mnt/hadoop/cms/store/user/velicanu/v6sorted/sortedHiForest_multbinned_nmin90_nmax110.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin0_nmax35_0.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin0_nmax35_1.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin0_nmax35_2.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin0_nmax35_3.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin0_nmax35_5.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin0_nmax35_6.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin0_nmax35_7.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin35_nmax90_11.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin35_nmax90_12.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin35_nmax90_16.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin35_nmax90_17.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin35_nmax90_18.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin35_nmax90_19.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin35_nmax90_20.root
+/mnt/hadoop/cms/store/user/velicanu/_v6sorted_split/_sortedHiForest_multbinned_nmin35_nmax90_21.root

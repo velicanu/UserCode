@@ -1,0 +1,15 @@
+Universe     = vanilla
+Initialdir   = /net/hisrv0001/home/astrelni/ridge/phi_cross_checks/
+Notification = Error
+Executable   = /net/hisrv0001/home/astrelni/ridge/phi_cross_checks/runcorr.sh
+Arguments    = $(Process) 0
+GetEnv       = True
+Output       = /net/hisrv0001/home/astrelni/ridge/phi_cross_checks/temp_log/ppbcorr9a1-$(Process).out
+Error        = /net/hisrv0001/home/astrelni/ridge/phi_cross_checks/temp_log/ppbcorr9a1-$(Process).err
+Log          = /net/hisrv0001/home/astrelni/ridge/phi_cross_checks/temp_log/ppbcorr9a1-$(Process).log
+Rank         = Mips
++AccountingGroup = "group_cmshi.astrelni"
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+Queue 68

@@ -1,0 +1,15 @@
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_0.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_1.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_10.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_11.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_12.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_13.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_14.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_2.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_3.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_4.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_5.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_6.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_7.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_8.root
+/mnt/hadoop/cms/store/user/velicanu/mc100sort/sortedHiForest_9.root

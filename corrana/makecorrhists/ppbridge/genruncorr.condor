@@ -1,0 +1,20 @@
+Universe     = vanilla
+Initialdir   = /net/hisrv0001/home/dav2105/corrana/makecorrhists/ppbridge/
+Notification = Error
+Executable   = /net/hisrv0001/home/dav2105/corrana/makecorrhists/ppbridge/genruncorr.sh
+Arguments    = $(Process) 0 0 40
+# Arguments    = $(Process) 0 40 100
+# Arguments    = $(Process) 0 100 119
+# Arguments    = $(Process) 0 119 1000
+GetEnv       = True
+Output       = /net/hidsk0001/d00/scratch/dav2105/lllogs/ppbgencorr14b00-$(Process).out
+Error        = /net/hidsk0001/d00/scratch/dav2105/lllogs/ppbgencorr14b00-$(Process).err
+Log          = /net/hidsk0001/d00/scratch/dav2105/lllogs/ppbgencorr14b00-$(Process).log
+Rank         = Mips
++AccountingGroup = "group_cmshi.dav2105"
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+# Queue 68
+# Queue 1000
+Queue 200

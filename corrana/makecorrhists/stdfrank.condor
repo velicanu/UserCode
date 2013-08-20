@@ -1,0 +1,33 @@
+Universe     = vanilla
+Initialdir   = /net/hisrv0001/home/dav2105/corrana/makecorrhists/
+Notification = Error
+Executable   = /net/hisrv0001/home/dav2105/corrana/makecorrhists/stdfrank.sh
+# Arguments    = $(Process) 1 franksorted.txt loweta 1 0.0 0.5 stdfrankrun.C
+# Arguments    = $(Process) 1 franksorted.txt higheta 1 0.5 2.0 stdfrankrun.C
+# Arguments    = $(Process) 1 mcsorted.txt v29mcrecoeff 1 0.0 2.0 stdfrankrun.C
+# Arguments    = $(Process) 0 mcsorted.txt v29mcgen 2 0.0 2.0 stdfrankrun.C
+# Arguments    = $(Process) 0 franksorted.txt pbpbnewscale_noeff 0 0.0 2.0 finebinrun.C
+# Arguments    = $(Process) 1 franksorted.txt pbpbnewscale_eff 0 0.0 2.0 finebinrun.C
+# Arguments    = $(Process) 1 mcsorted.txt mcreco_newscale 1 0.0 2.0 finebinrun.C
+# Arguments    = $(Process) 1 mcsorted.txt mcgen_newscale 2 0.0 2.0 finebinrun.C
+# Arguments    = $(Process) 1 mcsorted.txt mcgenloweta_newscale 2 0.0 0.5 finebinrun.C
+# Arguments    = $(Process) 1 mcsorted.txt mcgenhigheta_newscale 2 0.5 2.0 finebinrun.C
+# Arguments    = $(Process) 1 franksorted.txt pbpbloweta_newscale 0 0.0 0.5 finebinrun.C
+Arguments    = $(Process) 1 franksorted.txt pbpbhigheta_newscale 0 0.5 2.0 finebinrun.C
+
+
+# ./stdfrank.sh <fileNumber> <doeffweighting> <filelist> <outftag> <mccommand> <jetamin> <jetamax> <C-file>
+GetEnv       = True
+Output       = /net/hidsk0001/d00/scratch/dav2105/lllogs/stdfrank28-$(Process).out
+Error        = /net/hidsk0001/d00/scratch/dav2105/lllogs/stdfrank28-$(Process).err
+Log          = /net/hidsk0001/d00/scratch/dav2105/lllogs/stdfrank28-$(Process).log
+Rank         = Mips
+# Requirements = (Mips > 3000)
+# Requirements = ((Machine!="t2bat0260.cmsaf.mit.edu") &&  (Machine!="t2bat0261.cmsaf.mit.edu") && (Machine!="t2bat0262.cmsaf.mit.edu") && (Machine!="t2bat0263.cmsaf.mit.edu") && (Machine!="t2bat0264.cmsaf.mit.edu") && (Machine!="t2bat0265.cmsaf.mit.edu") && (Machine!="t2bat0266.cmsaf.mit.edu") && (Machine!="t2bat0267.cmsaf.mit.edu") && (Machine!="t2bat0268.cmsaf.mit.edu") && (Machine!="t2bat0269.cmsaf.mit.edu") && (Machine!="t2bat0270.cmsaf.mit.edu") && (Machine!="t2bat0271.cmsaf.mit.edu") && (Machine!="t2bat0272.cmsaf.mit.edu") && (Machine!="t2bat0273.cmsaf.mit.edu") && (Machine!="t2bat0274.cmsaf.mit.edu") && (Machine!="t2bat0275.cmsaf.mit.edu") && (Machine!="t2bat0276.cmsaf.mit.edu") && (Machine!="t2bat0277.cmsaf.mit.edu") && (Machine!="t2bat0278.cmsaf.mit.edu") && (Machine!="t2bat0279.cmsaf.mit.edu") && (Machine!="t2bat0280.cmsaf.mit.edu") )
+
++AccountingGroup = "group_cmshi.dav2105"
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+Queue 360
+# Queue 396

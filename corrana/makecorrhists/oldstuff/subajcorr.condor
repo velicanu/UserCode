@@ -1,0 +1,17 @@
+Universe     = vanilla
+Initialdir   = /net/hisrv0001/home/dav2105/corrana/makecorrhists/
+Notification = Error
+Executable   = /net/hisrv0001/home/dav2105/corrana/makecorrhists/runajcorr.sh
+Arguments    = $(Process) 
+GetEnv       = True
+Output       = /net/hidsk0001/d00/scratch/dav2105/lllogs/runajcorr0-$(Process).out
+Error        = /net/hidsk0001/d00/scratch/dav2105/lllogs/runajcorr0-$(Process).err
+Log          = /net/hidsk0001/d00/scratch/dav2105/lllogs/runajcorr0-$(Process).log
+Rank         = Mips
+Requirements = (Mips > 3000)
+
++AccountingGroup = "group_cmshi.dav2105"
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+Queue 10
