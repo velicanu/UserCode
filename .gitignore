@@ -1,0 +1,8 @@
+*.png
+*.root
+*.log
+*.out
+*.err
+*.pdf
+*_C.d
+*.so
