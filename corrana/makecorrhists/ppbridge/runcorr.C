@@ -1,18 +1,19 @@
-#include "/net/hisrv0001/home/dav2105/corrana/makecorrhists/ppbridge/corrana.C"
+#include "/afs/cern.ch/user/v/velicanu/UserCode/corrana/makecorrhists/ppbridge/corrana.C"
 #include <fstream>
 
 void runcorr(int condor_iter, int trackqual)
 {
 
-  const int nptbins = 4;
+  const int nptbins = 1;
   const int ncentbins = 1;
   const int najbins = 1;
   
   string buffer;
   vector<string> listoffiles;
   int nlines = 0;
-  ifstream infile("sortedforests.txt");
+  // ifstream infile("sortedforests.txt");
   // ifstream infile("doeproposalforests.txt");
+  ifstream infile("PA2013_PromptReco_Json_FullTrack12_v84_prod2.txt");
 
   if (!infile.is_open()) {
     cout << "Error opening file. Exiting." << endl;
@@ -57,10 +58,10 @@ void runcorr(int condor_iter, int trackqual)
   corrana(listoffiles[filenum].data(),trackqual);
   
   
-  double pttriglow[] =  {0.1 ,1 ,2 ,3, 1};
-  double pttrighigh[] = {1   ,2 ,3 ,4, 3};
-  double ptasslow[] =   {0.1 ,1 ,2 ,3, 1};
-  double ptasshigh[] =  {1   ,2 ,3 ,4, 3};
+  double pttriglow[] =  {14 ,1 ,2 ,3, 1};
+  double pttrighigh[] = {16   ,2 ,3 ,4, 3};
+  double ptasslow[] =   {1 ,1 ,2 ,3, 1};
+  double ptasshigh[] =  {2   ,2 ,3 ,4, 3};
   
   
   int centmin[] = {0,4,8,12,16,20,24,28,32};

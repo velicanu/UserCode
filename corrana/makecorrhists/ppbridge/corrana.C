@@ -1,5 +1,5 @@
 // #include "/net/hisrv0001/home/dav2105/run/CMSSW_4_4_4/src/CmsHi/JetAnalysis/macros/forest/hiForest_charge.h"
-#include "/net/hisrv0001/home/dav2105/run/CMSSW_5_2_5_patch1/src/UserCode/CmsHi/HiForest/V2/hiForest_charge.h"
+#include "/afs/cern.ch/user/v/velicanu/HiForestAnalysis/hiForest.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -42,14 +42,14 @@ void corrana(const char * infname = "/mnt/hadoop/cms/store/user/velicanu/mergedv
   mytrackquality = trackquality;
   cout<<"initializing hiforest and building centrality index"<<endl;
   cout<<"running on: "<<infname<<endl;
-  c = new HiForest(infname);
+  c = new HiForest(infname,"forest",cPPb);
   Long64_t nentries = c->GetEntries();
   // cent_index_start[0]=0;
   // int thiscent = 0;
   // for (Long64_t jentry=0; jentry<nentries;jentry++) {
   // c->GetEntry(jentry);
   // if(jentry%1000==0) cout<<jentry<<"/"<<nentries<<endl;
-  // if(thiscent != c->evt->hiBin)
+  // if(thiscent != c->evt.hiBin)
   // {
   // thiscent++;
   // cent_index_start[thiscent]=jentry;
@@ -60,6 +60,13 @@ void corrana(const char * infname = "/mnt/hadoop/cms/store/user/velicanu/mergedv
   // cout<<"done building centrality index"<<endl;
 }
 
+bool skipevent(double vzrange, int runboundary)
+{
+  bool doskip = false;
+  if(fabs(c->evt.vz)>vzrange) doskip = true;
+  if(c->evt.run>runboundary) doskip = true;
+  return doskip;
+}
 
 TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow , double ptasshigh, int centmin, int centmax, int nmin, int nmax, double vzrange)
 {
@@ -98,16 +105,18 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
     // if(jentry==9999) break;
     c->GetEntry(jentry);
     
-    // if(c->evt->hiBin <  centmin) continue;
-    // if(c->evt->hiBin >= centmax) break;
-    if(!(c->skim->phfPosFilter1&&c->skim->phfNegFilter1&&c->skim->phltPixelClusterShapeFilter&&c->skim->pprimaryvertexFilter)) continue;
-    if(fabs(c->evt->vz)>vzrange) continue;
-    if(c->evt->run!=202792) continue;
-    if(c->evt->lumi<317 || c->evt->lumi>1014) continue;
+    // if(c->evt.hiBin <  centmin) continue;
+    // if(c->evt.hiBin >= centmax) break;
+    // if(!(c->skim.phfPosFilter1&&c->skim.phfNegFilter1&&c->skim.phltPixelClusterShapeFilter&&c->skim.pprimaryvertexFilter)) continue;
+    // if(fabs(c->evt.vz)>vzrange) continue;
+    // if(c->evt.run!=202792) continue;
+    // if(c->evt.lumi<317 || c->evt.lumi>1014) continue;
+    // if(skipevent(vzrange,211256)) continue;
+    if(skipevent(vzrange,999999)) continue;
     int thismult = 0;
-    for(int i = 0 ; i < c->track->nTrk ; ++i)
+    for(int i = 0 ; i < c->track.nTrk ; ++i)
     {
-      if(c->track->trkPt[i]>0.4&&fabs(c->track->trkEta[i])<2.4&&c->track->highPurity[i]&&fabs(c->track->trkDz1[i]/c->track->trkDzError1[i])<3&&fabs(c->track->trkDxy1[i]/c->track->trkDxyError1[i])<3&&c->track->trkPtError[i]/c->track->trkPt[i]<0.1) thismult++;
+      if(c->track.trkPt[i]>0.4&&fabs(c->track.trkEta[i])<2.4&&c->track.highPurity[i]&&fabs(c->track.trkDz1[i]/c->track.trkDzError1[i])<3&&fabs(c->track.trkDxy1[i]/c->track.trkDxyError1[i])<3&&c->track.trkPtError[i]/c->track.trkPt[i]<0.1) thismult++;
     }
     hmult->Fill(thismult);
     // cout<<thismult<<endl;
@@ -125,21 +134,21 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
     vector<double> asstrkEta;
     vector<double> asstrkPhi;
     vector<double> asstrkIndex;
-    for(int i = 0 ; i < c->track->nTrk ; ++i)
+    for(int i = 0 ; i < c->track.nTrk ; ++i)
     {
       
-      hetaphi->Fill(c->track->trkEta[i],c->track->trkPhi[i]);
-      hdz->Fill(c->track->trkDz1[i]);
-      hdxy->Fill(c->track->trkDxy1[i]);
-      hdz_dzerr->Fill(c->track->trkDz1[i]/c->track->trkDzError1[i]);
-      hdxy_dxyerr->Fill(c->track->trkDxy1[i]/c->track->trkDxyError1[i]);
-      hpterr_pt->Fill(c->track->trkPtError[i]/c->track->trkPt[i]);
-      hnhits->Fill(c->track->trkNHit[i]);
-      hchi2ndof->Fill(c->track->trkChi2[i]/c->track->trkNdof[i]);
+      hetaphi->Fill(c->track.trkEta[i],c->track.trkPhi[i]);
+      hdz->Fill(c->track.trkDz1[i]);
+      hdxy->Fill(c->track.trkDxy1[i]);
+      hdz_dzerr->Fill(c->track.trkDz1[i]/c->track.trkDzError1[i]);
+      hdxy_dxyerr->Fill(c->track.trkDxy1[i]/c->track.trkDxyError1[i]);
+      hpterr_pt->Fill(c->track.trkPtError[i]/c->track.trkPt[i]);
+      hnhits->Fill(c->track.trkNHit[i]);
+      hchi2ndof->Fill(c->track.trkChi2[i]/c->track.trkNdof[i]);
 
-      if( c->track->trkPt[i]<pttriglow || c->track->trkPt[i]>pttrighigh || fabs(c->track->trkEta[i])>maxetatrg ) continue;
+      if( c->track.trkPt[i]<pttriglow || c->track.trkPt[i]>pttrighigh || fabs(c->track.trkEta[i])>maxetatrg ) continue;
       bool considertrack = false;
-      if(mytrackquality==0&&fabs(c->track->trkEta[i])<2.4&&c->track->highPurity[i]&&fabs(c->track->trkDz1[i]/c->track->trkDzError1[i])<3&&fabs(c->track->trkDxy1[i]/c->track->trkDxyError1[i])<3&&c->track->trkPtError[i]/c->track->trkPt[i]<0.1)
+      if(mytrackquality==0&&fabs(c->track.trkEta[i])<2.4&&c->track.highPurity[i]&&fabs(c->track.trkDz1[i]/c->track.trkDzError1[i])<3&&fabs(c->track.trkDxy1[i]/c->track.trkDxyError1[i])<3&&c->track.trkPtError[i]/c->track.trkPt[i]<0.1)
       {
         considertrack=true;
       }
@@ -147,27 +156,27 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
       {
         considertrack=true;
       }
-      else if(mytrackquality==2&&!(fabs(c->track->trkEta[i])<2.4&&c->track->highPurity[i]&&fabs(c->track->trkDz1[i]/c->track->trkDzError1[i])<3&&fabs(c->track->trkDxy1[i]/c->track->trkDxyError1[i])<3&&c->track->trkPtError[i]/c->track->trkPt[i]<0.1))
+      else if(mytrackquality==2&&!(fabs(c->track.trkEta[i])<2.4&&c->track.highPurity[i]&&fabs(c->track.trkDz1[i]/c->track.trkDzError1[i])<3&&fabs(c->track.trkDxy1[i]/c->track.trkDxyError1[i])<3&&c->track.trkPtError[i]/c->track.trkPt[i]<0.1))
       {
         considertrack=true;
       }
       if(considertrack)
       {
         ++ntrig;
-        trigtrkEta.push_back(c->track->trkEta[i]);
-        trigtrkPhi.push_back(c->track->trkPhi[i]);
+        trigtrkEta.push_back(c->track.trkEta[i]);
+        trigtrkPhi.push_back(c->track.trkPhi[i]);
         trigtrkIndex.push_back(i);
-        hpttrg->Fill(c->track->trkPt[i]);
-        hetatrg->Fill(c->track->trkEta[i]);
-        hphitrg->Fill(c->track->trkPhi[i]);
+        hpttrg->Fill(c->track.trkPt[i]);
+        hetatrg->Fill(c->track.trkEta[i]);
+        hphitrg->Fill(c->track.trkPhi[i]);
       }
     }
     if(ntrig<2) continue;
-    for(int j = 0 ; j < c->track->nTrk ; ++j)
+    for(int j = 0 ; j < c->track.nTrk ; ++j)
     {
-      if( c->track->trkPt[j]<ptasslow || c->track->trkPt[j]>ptasshigh || fabs(c->track->trkEta[j])>maxetaass) continue;
+      if( c->track.trkPt[j]<ptasslow || c->track.trkPt[j]>ptasshigh || fabs(c->track.trkEta[j])>maxetaass) continue;
       bool considertrack = false;
-      if(mytrackquality==0&&fabs(c->track->trkEta[j])<2.4&&c->track->highPurity[j]&&fabs(c->track->trkDz1[j]/c->track->trkDzError1[j])<3&&fabs(c->track->trkDxy1[j]/c->track->trkDxyError1[j])<3&&c->track->trkPtError[j]/c->track->trkPt[j]<0.1)
+      if(mytrackquality==0&&fabs(c->track.trkEta[j])<2.4&&c->track.highPurity[j]&&fabs(c->track.trkDz1[j]/c->track.trkDzError1[j])<3&&fabs(c->track.trkDxy1[j]/c->track.trkDxyError1[j])<3&&c->track.trkPtError[j]/c->track.trkPt[j]<0.1)
       {
         considertrack=true;
       }
@@ -175,19 +184,19 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
       {
         considertrack=true;
       }
-      else if(mytrackquality==2&&!(fabs(c->track->trkEta[j])<2.4&&c->track->highPurity[j]&&fabs(c->track->trkDz1[j]/c->track->trkDzError1[j])<3&&fabs(c->track->trkDxy1[j]/c->track->trkDxyError1[j])<3&&c->track->trkPtError[j]/c->track->trkPt[j]<0.1))
+      else if(mytrackquality==2&&!(fabs(c->track.trkEta[j])<2.4&&c->track.highPurity[j]&&fabs(c->track.trkDz1[j]/c->track.trkDzError1[j])<3&&fabs(c->track.trkDxy1[j]/c->track.trkDxyError1[j])<3&&c->track.trkPtError[j]/c->track.trkPt[j]<0.1))
       {
         considertrack=true;
       }
       if(considertrack)
       {
         ++nass;
-        asstrkEta.push_back(c->track->trkEta[j]);
-        asstrkPhi.push_back(c->track->trkPhi[j]);
+        asstrkEta.push_back(c->track.trkEta[j]);
+        asstrkPhi.push_back(c->track.trkPhi[j]);
         asstrkIndex.push_back(j);
-        hptass->Fill(c->track->trkPt[j]);
-        hetaass->Fill(c->track->trkEta[j]);
-        hphiass->Fill(c->track->trkPhi[j]);
+        hptass->Fill(c->track.trkPt[j]);
+        hetaass->Fill(c->track.trkEta[j]);
+        hphiass->Fill(c->track.trkPhi[j]);
       }
     }
     hmulttrg->Fill(ntrig);
@@ -238,16 +247,18 @@ TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptassl
     c->GetEntry(jentry);
     
     //! skip events outside our vz range
-    if(!(c->skim->phfPosFilter1&&c->skim->phfNegFilter1&&c->skim->phltPixelClusterShapeFilter&&c->skim->pprimaryvertexFilter)) continue;
-    if(fabs(c->evt->vz)>vzrange) continue;
-    if(c->evt->run!=202792) continue;
-    if(c->evt->lumi<317 || c->evt->lumi>1014) continue;
+    // if(!(c->skim.phfPosFilter1&&c->skim.phfNegFilter1&&c->skim.phltPixelClusterShapeFilter&&c->skim.pprimaryvertexFilter)) continue;
+    // if(fabs(c->evt.vz)>vzrange) continue;
+    // if(c->evt.run!=202792) continue;
+    // if(c->evt.lumi<317 || c->evt.lumi>1014) continue;
+
+    if(skipevent(vzrange,999999)) continue;
     
     int ntrackinptrange = 0;
     
-    for(int i = 0 ; i < c->track->nTrk ; ++i)
+    for(int i = 0 ; i < c->track.nTrk ; ++i)
     {
-      if(c->track->trkPt[i]>0.4&&fabs(c->track->trkEta[i])<2.4&&c->track->highPurity[i]&&fabs(c->track->trkDz1[i]/c->track->trkDzError1[i])<3&&fabs(c->track->trkDxy1[i]/c->track->trkDxyError1[i])<3&&c->track->trkPtError[i]/c->track->trkPt[i]<0.1) thismult++;
+      if(c->track.trkPt[i]>0.4&&fabs(c->track.trkEta[i])<2.4&&c->track.highPurity[i]&&fabs(c->track.trkDz1[i]/c->track.trkDzError1[i])<3&&fabs(c->track.trkDxy1[i]/c->track.trkDxyError1[i])<3&&c->track.trkPtError[i]/c->track.trkPt[i]<0.1) thismult++;
     }
     // cout<<thismult<<endl;
     // if(thismult<90) continue;
@@ -260,11 +271,11 @@ TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptassl
     //! construct vectors of all tracks passing our cuts in this event 
     vector<double> thistrkEta;
     vector<double> thistrkPhi;
-    for(int i = 0 ; i < c->track->nTrk ; ++i)
+    for(int i = 0 ; i < c->track.nTrk ; ++i)
     {
-      if( c->track->trkPt[i]<pttriglow || c->track->trkPt[i]>pttrighigh || fabs(c->track->trkEta[i])>maxetatrg ) continue;
+      if( c->track.trkPt[i]<pttriglow || c->track.trkPt[i]>pttrighigh || fabs(c->track.trkEta[i])>maxetatrg ) continue;
       bool considertrack = false;
-      if(mytrackquality==0&&fabs(c->track->trkEta[i])<2.4&&c->track->highPurity[i]&&fabs(c->track->trkDz1[i]/c->track->trkDzError1[i])<3&&fabs(c->track->trkDxy1[i]/c->track->trkDxyError1[i])<3&&c->track->trkPtError[i]/c->track->trkPt[i]<0.1)
+      if(mytrackquality==0&&fabs(c->track.trkEta[i])<2.4&&c->track.highPurity[i]&&fabs(c->track.trkDz1[i]/c->track.trkDzError1[i])<3&&fabs(c->track.trkDxy1[i]/c->track.trkDxyError1[i])<3&&c->track.trkPtError[i]/c->track.trkPt[i]<0.1)
       {
         considertrack=true;
       }
@@ -272,19 +283,19 @@ TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptassl
       {
         considertrack=true;
       }
-      else if(mytrackquality==2&&!(fabs(c->track->trkEta[i])<2.4&&c->track->highPurity[i]&&fabs(c->track->trkDz1[i]/c->track->trkDzError1[i])<3&&fabs(c->track->trkDxy1[i]/c->track->trkDxyError1[i])<3&&c->track->trkPtError[i]/c->track->trkPt[i]<0.1))
+      else if(mytrackquality==2&&!(fabs(c->track.trkEta[i])<2.4&&c->track.highPurity[i]&&fabs(c->track.trkDz1[i]/c->track.trkDzError1[i])<3&&fabs(c->track.trkDxy1[i]/c->track.trkDxyError1[i])<3&&c->track.trkPtError[i]/c->track.trkPt[i]<0.1))
       {
         considertrack=true;
       }
       if(considertrack)
       {
         ++ntrackinptrange;
-        thistrkEta.push_back(c->track->trkEta[i]);
-        thistrkPhi.push_back(c->track->trkPhi[i]);
+        thistrkEta.push_back(c->track.trkEta[i]);
+        thistrkPhi.push_back(c->track.trkPhi[i]);
       }
     }
     if(ntrackinptrange<1) continue;
-    int thiscent = c->evt->hiBin;
+    int thiscent = c->evt.hiBin;
     
     //! loop through the next n events to pair with this event
     int mixentry = jentry;
@@ -297,12 +308,13 @@ TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptassl
       //! stop the loop when we reach the end of the file or of this centrality bin
       if(mixentry==nentries) break;
       c->GetEntry(mixentry);
-      // if(c->evt->hiBin != thiscent) break;
+      // if(c->evt.hiBin != thiscent) break;
       
-      if(!(c->skim->phfPosFilter1&&c->skim->phfNegFilter1&&c->skim->phltPixelClusterShapeFilter&&c->skim->pprimaryvertexFilter)) continue;
-      if(fabs(c->evt->vz)>vzrange) continue;
-      if(c->evt->run!=202792) continue;
-      if(c->evt->lumi<317 || c->evt->lumi>1014) continue;
+      // if(!(c->skim.phfPosFilter1&&c->skim.phfNegFilter1&&c->skim.phltPixelClusterShapeFilter&&c->skim.pprimaryvertexFilter)) continue;
+      // if(fabs(c->evt.vz)>vzrange) continue;
+      // if(c->evt.run!=202792) continue;
+      // if(c->evt.lumi<317 || c->evt.lumi>1014) continue;
+      if(skipevent(vzrange,999999)) continue;
       
       int fillcount = 0;
       //! for each passed track in the original event pair all the passed tracks in the new event and fill deta dphi
@@ -310,11 +322,11 @@ TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptassl
       for(int i = 0 ; i < ntrackinptrange ; ++i)
       {
         ntrkhere = 0;
-        for(int j = 0 ; j < c->track->nTrk ; ++j)
+        for(int j = 0 ; j < c->track.nTrk ; ++j)
         {
-          if( c->track->trkPt[j]<ptasslow || c->track->trkPt[j]>ptasshigh || fabs(c->track->trkEta[j])>maxetaass) continue;
+          if( c->track.trkPt[j]<ptasslow || c->track.trkPt[j]>ptasshigh || fabs(c->track.trkEta[j])>maxetaass) continue;
           bool considertrack = false;
-          if(mytrackquality==0&&fabs(c->track->trkEta[j])<2.4&&c->track->highPurity[j]&&fabs(c->track->trkDz1[j]/c->track->trkDzError1[j])<3&&fabs(c->track->trkDxy1[j]/c->track->trkDxyError1[j])<3&&c->track->trkPtError[j]/c->track->trkPt[j]<0.1)
+          if(mytrackquality==0&&fabs(c->track.trkEta[j])<2.4&&c->track.highPurity[j]&&fabs(c->track.trkDz1[j]/c->track.trkDzError1[j])<3&&fabs(c->track.trkDxy1[j]/c->track.trkDxyError1[j])<3&&c->track.trkPtError[j]/c->track.trkPt[j]<0.1)
           {
             considertrack=true;
           }
@@ -322,14 +334,14 @@ TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptassl
           {
             considertrack=true;
           }
-          else if(mytrackquality==2&&!(fabs(c->track->trkEta[j])<2.4&&c->track->highPurity[j]&&fabs(c->track->trkDz1[j]/c->track->trkDzError1[j])<3&&fabs(c->track->trkDxy1[j]/c->track->trkDxyError1[j])<3&&c->track->trkPtError[j]/c->track->trkPt[j]<0.1))
+          else if(mytrackquality==2&&!(fabs(c->track.trkEta[j])<2.4&&c->track.highPurity[j]&&fabs(c->track.trkDz1[j]/c->track.trkDzError1[j])<3&&fabs(c->track.trkDxy1[j]/c->track.trkDxyError1[j])<3&&c->track.trkPtError[j]/c->track.trkPt[j]<0.1))
           {
             considertrack=true;
           }
           if(considertrack)
           {
-            double deta = fabs(thistrkEta[i] - c->track->trkEta[j]);
-            double dphi = fabs(thistrkPhi[i] - c->track->trkPhi[j]);
+            double deta = fabs(thistrkEta[i] - c->track.trkEta[j]);
+            double dphi = fabs(thistrkPhi[i] - c->track.trkPhi[j]);
             if( dphi > pi ) dphi = 2*pi - dphi;
             hTrackTrackBackground->Fill(deta,dphi);
             hTrackTrackBackground->Fill(-deta,dphi);
