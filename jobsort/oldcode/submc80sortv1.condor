@@ -1,0 +1,17 @@
+Universe     = vanilla
+Initialdir   = /net/hidsk0001/d00/scratch/dav2105/forest/jobsort/
+Notification = Error
+Executable   = /net/hidsk0001/d00/scratch/dav2105/forest/jobsort/franksortv1.sh
+Arguments    = $(Process) 
+GetEnv       = True
+Output       = /net/hidsk0001/d00/scratch/dav2105/llogs/franksortjet80v2_test1-$(Process).out
+Error        = /net/hidsk0001/d00/scratch/dav2105/llogs/franksortjet80v2_test1-$(Process).err
+Log          = /net/hidsk0001/d00/scratch/dav2105/llogs/franksortjet80v2_test1-$(Process).log
+Rank         = Mips
+Requirements = (Mips > 3000)
+
++AccountingGroup = "group_cmshi.dav2105"
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+Queue 1210

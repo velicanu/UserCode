@@ -1,0 +1,15 @@
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/0.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/1.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/10.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/11.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/12.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/13.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/14.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/2.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/3.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/4.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/5.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/6.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/7.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/8.root
+/mnt/hadoop/cms/store/user/velicanu/unsorted-mc100/9.root

@@ -1,0 +1,18 @@
+Universe     = vanilla
+Initialdir   = /net/hidsk0001/d00/scratch/dav2105/forest/jobsort/
+Notification = Error
+Executable   = /net/hidsk0001/d00/scratch/dav2105/forest/jobsort/mc100sort.sh
+Arguments    = $(Process) 
+GetEnv       = True
+Output       = /net/hidsk0001/d00/scratch/dav2105/llogs/mc100sort13-$(Process).out
+Error        = /net/hidsk0001/d00/scratch/dav2105/llogs/mc100sort13-$(Process).err
+Log          = /net/hidsk0001/d00/scratch/dav2105/llogs/mc100sort13-$(Process).log
+Rank         = Mips
+Requirements = (Mips > 3000)
+Requirements = !((Machine=="t2bat0260.cmsaf.mit.edu") || (Machine=="t2bat0261.cmsaf.mit.edu") ||(Machine=="t2bat0262.cmsaf.mit.edu") ||(Machine=="t2bat0263.cmsaf.mit.edu") ||(Machine=="t2bat0264.cmsaf.mit.edu") ||(Machine=="t2bat0265.cmsaf.mit.edu") ||(Machine=="t2bat0266.cmsaf.mit.edu") ||(Machine=="t2bat0267.cmsaf.mit.edu") ||(Machine=="t2bat0268.cmsaf.mit.edu") ||(Machine=="t2bat0269.cmsaf.mit.edu") ||(Machine=="t2bat0270.cmsaf.mit.edu") ||(Machine=="t2bat0271.cmsaf.mit.edu") ||(Machine=="t2bat0272.cmsaf.mit.edu") ||(Machine=="t2bat0273.cmsaf.mit.edu") ||(Machine=="t2bat0274.cmsaf.mit.edu") ||(Machine=="t2bat0275.cmsaf.mit.edu") ||(Machine=="t2bat0276.cmsaf.mit.edu") ||(Machine=="t2bat0277.cmsaf.mit.edu") ||(Machine=="t2bat0278.cmsaf.mit.edu") ||(Machine=="t2bat0279.cmsaf.mit.edu") ||(Machine=="t2bat0280.cmsaf.mit.edu") )
+
++AccountingGroup = "group_cmshi.dav2105"
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+Queue 15
