@@ -33,6 +33,7 @@ fi
 
 # example ./stdsort.sh 1 /net/hidsk0001/d00/scratch/dav2105/forest/jobsort/promptskim-hihighpt-hltjet80-pt90-v3-forest-v2.txt /mnt/hadoop/cms/store/user/velicanu/unmerged_promptskim-hihighpt-hltjet80-pt90-v3-forest-v2 pbpbsort.C
 # example ./stdsort.sh 0 mc100sortlist.txt /mnt/hadoop/cms/store/user/velicanu/testmcsort100 pbpbsort.C
+# example ./stdsort.sh 0 mc100sortlist.txt /mnt/hadoop/cms/store/user/velicanu/testppbtrack12sort ppbmultbin.C
  
 
 
@@ -49,8 +50,8 @@ filename=`head -$input ${2} | tail -1`
 echo dav2105 running on $filename
 
 rootn.exe -b <<EOF
-.L /net/hidsk0001/d00/scratch/dav2105/forest/jobsort/${4}+
-stdsort($1,"/net/hidsk0001/d00/scratch/dav2105/forest/jobsort/$2",$5,$6)
+.L $PWD/${4}+
+stdsort($1,"$PWD/$2",$5,$6)
 .q
 EOF
 
