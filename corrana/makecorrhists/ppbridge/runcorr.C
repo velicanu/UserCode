@@ -1,10 +1,10 @@
-#include "/afs/cern.ch/user/v/velicanu/UserCode/corrana/makecorrhists/ppbridge/corrana.C"
+#include "corrana.C"
 #include <fstream>
 
 void runcorr(int condor_iter, int trackqual)
 {
 
-  const int nptbins = 1;
+  const int nptbins = 2;
   const int ncentbins = 1;
   const int najbins = 1;
   
@@ -13,7 +13,9 @@ void runcorr(int condor_iter, int trackqual)
   int nlines = 0;
   // ifstream infile("sortedforests.txt");
   // ifstream infile("doeproposalforests.txt");
-  ifstream infile("PA2013_PromptReco_Json_FullTrack12_v84_prod2.txt");
+  // ifstream infile("PA2013_PromptReco_Json_FullTrack12_v84_prod2.txt");
+  // ifstream infile("PA2013_PromptReco_Json_FullTrack12_v84_prod2_MIT.txt");
+  ifstream infile("HIMinBiasUPC_PbPbUPC_pptracking_452p1_forest_v2.txt");
 
   if (!infile.is_open()) {
     cout << "Error opening file. Exiting." << endl;
@@ -33,7 +35,7 @@ void runcorr(int condor_iter, int trackqual)
   cout << "ipt: " << ptbin << " icent: " << centbin << " iaj: " << ajbin << " filenum: " << filenum << " dostdhists: " << dostdhists << endl;
  
 
-  int nmin = 0 , nmax = 1000, one = 1;
+  int nmin = 220 , nmax = 1000, one = 1;
   //! for first iteration of forest production
   /*
   if(filenum==0) { nmin = 110 ; nmax = 1000; }
@@ -58,15 +60,15 @@ void runcorr(int condor_iter, int trackqual)
   corrana(listoffiles[filenum].data(),trackqual);
   
   
-  double pttriglow[] =  {14 ,1 ,2 ,3, 1};
-  double pttrighigh[] = {16   ,2 ,3 ,4, 3};
+  double pttriglow[] =  {1 ,14 ,2 ,3, 1};
+  double pttrighigh[] = {2   ,16 ,3 ,4, 3};
   double ptasslow[] =   {1 ,1 ,2 ,3, 1};
   double ptasshigh[] =  {2   ,2 ,3 ,4, 3};
   
   
   int centmin[] = {0,4,8,12,16,20,24,28,32};
   int centmax[] = {41,8,12,16,20,24,28,32,36};
-  TFile * outf = new TFile(Form("corrhists_2fixedscale_trkqaul%d_nmin%d_nmax%d_ptmin%d_ptmax%d_%d.root",trackqual,nmin,nmax,(int)pttriglow[ptbin]/one,(int)pttrighigh[ptbin]/one,filenum),"recreate");
+  TFile * outf = new TFile(Form("pbpb_corrhists_2fixedscale_trkqaul%d_nmin%d_nmax%d_tptmin%d_tptmax%d_aptmin%d_aptmax%d_%d.root",trackqual,nmin,nmax,(int)pttriglow[ptbin]/one,(int)pttrighigh[ptbin]/one,(int)ptasslow[ptbin]/one,(int)ptasshigh[ptbin]/one,filenum),"recreate");
   
   int i = 0;
   int cent = 0;

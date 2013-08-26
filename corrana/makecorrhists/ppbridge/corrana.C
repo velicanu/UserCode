@@ -1,5 +1,5 @@
 // #include "/net/hisrv0001/home/dav2105/run/CMSSW_4_4_4/src/CmsHi/JetAnalysis/macros/forest/hiForest_charge.h"
-#include "/afs/cern.ch/user/v/velicanu/HiForestAnalysis/hiForest.h"
+#include "HiForestAnalysis/hiForest.h"
 #include <TH2.h>
 #include <TStyle.h>
 #include <TCanvas.h>
@@ -34,7 +34,7 @@ TH1D * hchi2ndof;
 
 HiForest *c;
 TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow , double ptasshigh, int centmin, int centmax, int nmin = 0, int nmax = 1000, double vzrange = 15);
-TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptasslow, double ptasshigh, int centmin, int centmax, int nmin = 0, int nmax = 1000, double vzrange = 15, int statfactor = 20);
+TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptasslow, double ptasshigh, int centmin, int centmax, int nmin = 0, int nmax = 1000, double vzrange = 15, int statfactor = 10);
 int GetNTotTrig();
 
 void corrana(const char * infname = "/mnt/hadoop/cms/store/user/velicanu/mergedv1_sortedforest/mergesortv1_0.root", int trackquality = 0)
@@ -74,11 +74,11 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
   Long64_t nbytes = 0, nb = 0;
   TH2D * hTrackTrackSignal = new TH2D(Form("signal_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";#Delta#eta;#Delta#phi",33,-5,5,48,-pi,2*pi);
   hmult    = new TH1D(Form("hmult_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";N",300,0,300);
-  hpttrg   = new TH1D(Form("hpttrg_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";p_{T}",100,0,10);
+  hpttrg   = new TH1D(Form("hpttrg_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";p_{T}",600,0,60);
   hetatrg  = new TH1D(Form("hetatrg_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";#eta",100,-2.5,2.5);
   hphitrg  = new TH1D(Form("hphitrg_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";#phi",100,-2*pi,2*pi);
   hmulttrg = new TH1D(Form("hmulttrg_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";#N in p_{T} range",300,0,300);
-  hptass   = new TH1D(Form("hptass_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";p_{T}",100,0,10);
+  hptass   = new TH1D(Form("hptass_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";p_{T}",600,0,60);
   hetaass  = new TH1D(Form("hetaass_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";#eta",100,-2.5,2.5);
   hphiass  = new TH1D(Form("hphiass_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";#phi",100,-2*pi,2*pi);
  
@@ -122,7 +122,7 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
     // cout<<thismult<<endl;
     if(thismult<nmin || thismult>=nmax)
     {
-      cout<<"WARNING: different mult in input file. nmin "<<nmin<<", nmax "<<nmax<<", thismult "<<thismult<<endl;
+      // cout<<"WARNING: different mult in input file. nmin "<<nmin<<", nmax "<<nmax<<", thismult "<<thismult<<endl;
       continue;
     }
     nmult++;
@@ -171,7 +171,7 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
         hphitrg->Fill(c->track.trkPhi[i]);
       }
     }
-    if(ntrig<2) continue;
+    // if(ntrig<2) continue;
     for(int j = 0 ; j < c->track.nTrk ; ++j)
     {
       if( c->track.trkPt[j]<ptasslow || c->track.trkPt[j]>ptasshigh || fabs(c->track.trkEta[j])>maxetaass) continue;
@@ -202,7 +202,8 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
     hmulttrg->Fill(ntrig);
     for(int i = 0 ; i < ntrig ; ++i)
     {
-      if(ntrig>1) ntottrig += 1;
+      // if(ntrig>1) 
+        ntottrig += 1;
       double double_ntrig = ntrig;
       for(int j = 0 ; j < nass ; ++j)
       {
@@ -264,7 +265,7 @@ TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptassl
     // if(thismult<90) continue;
     if(thismult<nmin || thismult>=nmax)
     {
-      cout<<"WARNING: different mult in input file"<<endl;
+      // cout<<"WARNING: different mult in input file"<<endl;
       continue;
     }
     
