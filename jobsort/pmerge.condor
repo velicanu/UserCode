@@ -11,6 +11,6 @@ Rank         = Mips
 +AccountingGroup = "group_cmshi.dav2105"
 should_transfer_files = YES
 when_to_transfer_output = ON_EXIT
-transfer_input_files = arg1,mergeForest.C
+transfer_input_files = arg1,mergeForest.exe
 
 Queue njobs
