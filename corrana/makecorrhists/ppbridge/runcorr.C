@@ -1,7 +1,7 @@
 #include "corrana.C"
 #include <fstream>
 
-void runcorr(int condor_iter, int trackqual)
+void runcorr(int condor_iter, int trackqual, string flist = "", string tag = "")
 {
 
   const int nptbins = 2;
@@ -15,8 +15,8 @@ void runcorr(int condor_iter, int trackqual)
   // ifstream infile("doeproposalforests.txt");
   // ifstream infile("PA2013_PromptReco_Json_FullTrack12_v84_prod2.txt");
   // ifstream infile("PA2013_PromptReco_Json_FullTrack12_v84_prod2_MIT.txt");
-  ifstream infile("HIMinBiasUPC_PbPbUPC_pptracking_452p1_forest_v2.txt");
-
+  // ifstream infile("HIMinBiasUPC_PbPbUPC_pptracking_452p1_forest_v2.txt");
+  ifstream infile(flist.data());
   if (!infile.is_open()) {
     cout << "Error opening file. Exiting." << endl;
     return;
@@ -68,9 +68,9 @@ void runcorr(int condor_iter, int trackqual)
   
   int centmin[] = {0,4,8,12,16,20,24,28,32};
   int centmax[] = {41,8,12,16,20,24,28,32,36};
-  TFile * outf = new TFile(Form("pbpb_corrhists_2fixedscale_trkqaul%d_nmin%d_nmax%d_tptmin%d_tptmax%d_aptmin%d_aptmax%d_%d.root",trackqual,nmin,nmax,(int)pttriglow[ptbin]/one,(int)pttrighigh[ptbin]/one,(int)ptasslow[ptbin]/one,(int)ptasshigh[ptbin]/one,filenum),"recreate");
+  TFile * outf = new TFile(Form("%s_trkqaul%d_nmin%d_nmax%d_tptmin%d_tptmax%d_aptmin%d_aptmax%d_%d.root",tag.data(),trackqual,nmin,nmax,(int)pttriglow[ptbin]/one,(int)pttrighigh[ptbin]/one,(int)ptasslow[ptbin]/one,(int)ptasshigh[ptbin]/one,filenum),"recreate");
   
-  int i = 0;
+  // int i = 0;
   int cent = 0;
 
   cout<<"cent iteration "<<cent<<endl;
@@ -92,3 +92,16 @@ void runcorr(int condor_iter, int trackqual)
   outf->Write();
   outf->Close();
 }
+
+
+int main(int argc, char *argv[])
+{
+  if(argc != 5)
+  {
+    std::cout << "Usage: runcorr <condor_iter> <trackqual> <file-list> <tag>" << std::endl;
+    return 1;
+  }
+  runcorr(std::atoi(argv[1]), std::atoi(argv[2]), argv[3], argv[4]);
+  return 0;
+}
+

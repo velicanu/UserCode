@@ -43,7 +43,10 @@ void corrana(const char * infname = "/mnt/hadoop/cms/store/user/velicanu/mergedv
   cout<<"initializing hiforest and building centrality index"<<endl;
   cout<<"running on: "<<infname<<endl;
   c = new HiForest(infname,"forest",cPPb);
-  Long64_t nentries = c->GetEntries();
+  c->LoadNoTrees();
+  c->hasTrackTree = true;
+  c->hasEvtTree = true;
+  // Long64_t nentries = c->GetEntries();
   // cent_index_start[0]=0;
   // int thiscent = 0;
   // for (Long64_t jentry=0; jentry<nentries;jentry++) {
@@ -71,7 +74,7 @@ bool skipevent(double vzrange, int runboundary)
 TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow , double ptasshigh, int centmin, int centmax, int nmin, int nmax, double vzrange)
 {
   Long64_t nentries = c->GetEntries();
-  Long64_t nbytes = 0, nb = 0;
+  // Long64_t nbytes = 0, nb = 0;
   TH2D * hTrackTrackSignal = new TH2D(Form("signal_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";#Delta#eta;#Delta#phi",33,-5,5,48,-pi,2*pi);
   hmult    = new TH1D(Form("hmult_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";N",300,0,300);
   hpttrg   = new TH1D(Form("hpttrg_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";p_{T}",600,0,60);
@@ -95,8 +98,10 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
 
 
   int nmult = 0;
-  int n_entries_in_cent_range = cent_index_start[centmax] - cent_index_start[centmin];
+  // int n_entries_in_cent_range = cent_index_start[centmax] - cent_index_start[centmin];
   // for (Long64_t jentry=cent_index_start[centmin]; jentry<cent_index_start[centmax];jentry++) {
+
+  
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     if(jentry%1000==0) 
     {
@@ -232,11 +237,11 @@ TH2D * TrackTrackSignal(double pttriglow , double pttrighigh , double ptasslow ,
 TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptasslow, double ptasshigh, int centmin, int centmax, int nmin, int nmax, double vzrange, int statfactor)
 {
   Long64_t nentries = c->GetEntries();
-  Long64_t nbytes = 0, nb = 0;
+  // Long64_t nbytes = 0, nb = 0;
   TH2D * hTrackTrackBackground = new TH2D(Form("background_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow,(int)pttrighigh,(int)ptasslow,(int)ptasshigh,centmin,centmax),";#Delta#eta;#Delta#phi",33,-5,5,48,-pi,2*pi);
   
   //! loop through all events in the centrality range to fill the mixed event background distribution
-  int n_entries_in_cent_range = cent_index_start[centmax] - cent_index_start[centmin];
+  // int n_entries_in_cent_range = cent_index_start[centmax] - cent_index_start[centmin];
   // for (Long64_t jentry=cent_index_start[centmin]; jentry<cent_index_start[centmax];jentry++) {
   for (Long64_t jentry=0; jentry<nentries;jentry++) {
     int thismult = 0;
@@ -296,7 +301,7 @@ TH2D * TrackTrackBackground(double pttriglow , double pttrighigh , double ptassl
       }
     }
     if(ntrackinptrange<1) continue;
-    int thiscent = c->evt.hiBin;
+    // int thiscent = c->evt.hiBin;
     
     //! loop through the next n events to pair with this event
     int mixentry = jentry;
