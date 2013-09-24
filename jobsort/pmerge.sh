@@ -14,7 +14,7 @@ then
   exit 1
 fi
 
-now="submit_$(date +"%m_%d_%Y__%H_%M_%S")"
+now="mergejob_$(date +"%m_%d_%Y__%H_%M_%S")"
 mkdir $now
 len=`wc -l $1 | awk '{print $1}'`
 filesperjob=$3
