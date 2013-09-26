@@ -1,10 +1,10 @@
 #include "corrana.C"
 #include <fstream>
 
-void runcorr(int condor_iter, int trackqual, string flist = "", string tag = "")
+void runcorr(int condor_iter, int trackqual, string flist = "", string tag = "", int nmin = 220, int nmax = 1000, float pttrigmin = 1, float pttrigmax = 2, float ptassmin = 1, float ptassmax = 1)
 {
 
-  const int nptbins = 2;
+  const int nptbins = 1;
   const int ncentbins = 1;
   const int najbins = 1;
   
@@ -34,8 +34,7 @@ void runcorr(int condor_iter, int trackqual, string flist = "", string tag = "")
   int filenum = (condor_iter / (nptbins * ncentbins * najbins));
   cout << "ipt: " << ptbin << " icent: " << centbin << " iaj: " << ajbin << " filenum: " << filenum << " dostdhists: " << dostdhists << endl;
  
-
-  int nmin = 220 , nmax = 1000, one = 1;
+  // int nmin = 220 , nmax = 1000, one = 1;
   //! for first iteration of forest production
   /*
   if(filenum==0) { nmin = 110 ; nmax = 1000; }
@@ -60,29 +59,31 @@ void runcorr(int condor_iter, int trackqual, string flist = "", string tag = "")
   corrana(listoffiles[filenum].data(),trackqual);
   
   
-  double pttriglow[] =  {1 ,14 ,2 ,3, 1};
-  double pttrighigh[] = {2   ,16 ,3 ,4, 3};
-  double ptasslow[] =   {1 ,1 ,2 ,3, 1};
-  double ptasshigh[] =  {2   ,2 ,3 ,4, 3};
+  // double pttriglow[] =  {1   ,14 ,16 ,20, 1};
+  // double pttrighigh[] = {2   ,16 ,20 ,24, 3};
+  // double ptasslow[] =   {1   ,1  ,1  ,1 , 1};
+  // double ptasshigh[] =  {2   ,2  ,2  ,2 , 3};
   
   
   int centmin[] = {0,4,8,12,16,20,24,28,32};
   int centmax[] = {41,8,12,16,20,24,28,32,36};
-  TFile * outf = new TFile(Form("%s_trkqaul%d_nmin%d_nmax%d_tptmin%d_tptmax%d_aptmin%d_aptmax%d_%d.root",tag.data(),trackqual,nmin,nmax,(int)pttriglow[ptbin]/one,(int)pttrighigh[ptbin]/one,(int)ptasslow[ptbin]/one,(int)ptasshigh[ptbin]/one,filenum),"recreate");
+  // TFile * outf = new TFile(Form("%s_trkqaul%d_nmin%d_nmax%d_tptmin%d_tptmax%d_aptmin%d_aptmax%d_%d.root",tag.data(),trackqual,nmin,nmax,(int)pttrigmin/one,(int)pttrigmax/one,(int)ptassmin/one,(int)ptassmax/one,filenum),"recreate");
+  cout<<Form("%s_trkqaul%d_nmin%d_nmax%d_tptmin%d_tptmax%d_aptmin%d_aptmax%d_%d.root",tag.data(),trackqual,nmin,nmax,(int)pttrigmin,(int)pttrigmax,(int)ptassmin,(int)ptassmax,filenum)<<endl;
+  TFile * outf = new TFile(Form("%s_trkqaul%d_nmin%d_nmax%d_tptmin%d_tptmax%d_aptmin%d_aptmax%d_%d.root",tag.data(),trackqual,nmin,nmax,(int)pttrigmin,(int)pttrigmax,(int)ptassmin,(int)ptassmax,filenum),"recreate");
   
   // int i = 0;
   int cent = 0;
 
   cout<<"cent iteration "<<cent<<endl;
-  TH2D * ttsig = TrackTrackSignal(pttriglow[ptbin],pttrighigh[ptbin],ptasslow[ptbin],ptasshigh[ptbin],centmin[cent],centmax[cent],nmin,nmax);
-  TH2D * ttbak = TrackTrackBackground(pttriglow[ptbin],pttrighigh[ptbin],ptasslow[ptbin],ptasshigh[ptbin],centmin[cent],centmax[cent],nmin,nmax);
+  TH2D * ttsig = TrackTrackSignal(pttrigmin,pttrigmax,ptassmin,ptassmax,centmin[cent],centmax[cent],nmin,nmax);
+  TH2D * ttbak = TrackTrackBackground(pttrigmin,pttrigmax,ptassmin,ptassmax,centmin[cent],centmax[cent],nmin,nmax);
 
-  TH1I * hntottrig = new TH1I(Form("nttottrig_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow[ptbin],(int)pttrighigh[ptbin],(int)ptasslow[ptbin],(int)ptasshigh[ptbin],centmin[cent],centmax[cent]),"",1,0.5,1.5);
+  TH1I * hntottrig = new TH1I(Form("nttottrig_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttrigmin,(int)pttrigmax,(int)ptassmin,(int)ptassmax,centmin[cent],centmax[cent]),"",1,0.5,1.5);
   int myntottrig = GetNTotTrig();
   hntottrig->Fill(1,myntottrig);
   cout<<"ntottrig: "<<myntottrig<<endl;
 
-  TH2D * ttcorr = (TH2D*)ttsig->Clone(Form("corr_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttriglow[ptbin],(int)pttrighigh[ptbin],(int)ptasslow[ptbin],(int)ptasshigh[ptbin],centmin[cent],centmax[cent]));
+  TH2D * ttcorr = (TH2D*)ttsig->Clone(Form("corr_trg%d_%d_ass%d_%d_cmin%d_cmax%d",(int)pttrigmin,(int)pttrigmax,(int)ptassmin,(int)ptassmax,centmin[cent],centmax[cent]));
   ttcorr->Divide(ttbak);
   ttcorr->Scale(ttbak->GetBinContent(ttbak->FindBin(0,0)));
   ttcorr->Scale(1/0.0594998609); //! bin width
@@ -96,12 +97,12 @@ void runcorr(int condor_iter, int trackqual, string flist = "", string tag = "")
 
 int main(int argc, char *argv[])
 {
-  if(argc != 5)
+  if(argc != 11)
   {
-    std::cout << "Usage: runcorr <condor_iter> <trackqual> <file-list> <tag>" << std::endl;
+    std::cout << "Usage: runcorr <condor_iter> <trackqual> <file-list> <tag> <nmin> <nmax> <pttrigmin> <pttrigmax> <ptassmin> <ptassmax>" << std::endl;
     return 1;
   }
-  runcorr(std::atoi(argv[1]), std::atoi(argv[2]), argv[3], argv[4]);
+  runcorr(std::atoi(argv[1]), std::atoi(argv[2]), argv[3], argv[4], std::atoi(argv[5]), std::atoi(argv[6]), std::atof(argv[7]), std::atof(argv[8]), std::atof(argv[9]), std::atof(argv[10]));
   return 0;
 }
 
